@@ -1,0 +1,11 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: ${ADMIN_USER}
+          password: ${ADMIN_PASS}
+          properties:
+            - mailer:
+                emailAddress: ${ADMIN_EMAIL}
+           

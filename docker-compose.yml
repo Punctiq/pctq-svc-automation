@@ -1,0 +1,35 @@
+services:
+  jenkins:
+    image: itcommunity/automation-svc:1.0.0
+    container_name: pctq-prod-hz-automation
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      JAVA_OPTS: >
+        -Djenkins.install.runSetupWizard=false
+        -Djenkins.model.Jenkins.logStartupPerformance=true
+        -Dcasc.reload.token=pctq-reload-token
+      CASC_JENKINS_CONFIG: /var/jenkins_home/casc/jenkins.yaml
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASS: ${ADMIN_PASS}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      
+    volumes:
+      - pctq_jenkins_data:/var/jenkins_home
+      - ./jenkins.yaml:/var/jenkins_home/casc/jenkins.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    tmpfs:
+      - /run
+      - /tmp
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:8080/login"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  pctq_jenkins_data:
+    name: pctq_jenkins_data
+    external: true
