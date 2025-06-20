@@ -33,3 +33,7 @@ volumes:
   pctq_jenkins_data:
     name: pctq_jenkins_data
     external: true
+
+networks:
+  pctq-prod-hz-net:
+    external: true    
