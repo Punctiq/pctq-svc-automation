@@ -23,6 +23,9 @@ services:
     tmpfs:
       - /run
       - /tmp
+    networks:
+      pctq-prod-hz-net:
+        ipv4_address: 172.25.0.3  
     healthcheck:
       test: ["CMD", "curl", "-s", "http://localhost:8080/login"]
       interval: 30s
